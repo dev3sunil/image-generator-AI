@@ -1,0 +1,80 @@
+<!-- <input id="prompt" placeholder="Enter prompt" />
+<button onclick="generate()">Generate</button>
+<img id="result"/>
+
+<script>
+async function generate() {
+  const prompt = document.getElementById("prompt").value;
+
+  const res = await fetch(
+    "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer YOUR_HF_TOKEN",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ inputs: prompt })
+    }
+  );
+
+  const blob = await res.blob();
+  document.getElementById("result").src = URL.createObjectURL(blob);
+}
+</script> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Image Generator</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin: 20px; }
+    input, button { padding: 10px; font-size: 16px; margin: 5px; width: 300px; }
+    img { max-width: 512px; margin-top: 20px; border: 1px solid #ccc; border-radius: 10px; }
+    #status { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>AI Image Generator</h1>
+  <input id="prompt" type="text" placeholder="Enter a prompt" />
+  <br/>
+  <button onclick="generate()">Generate Image</button>
+  <p id="status"></p>
+  <img id="result" />
+
+  <script>
+    let timerInterval;
+    async function generate() {
+      const prompt = document.getElementById("prompt").value;
+      const status = document.getElementById("status");
+      const img = document.getElementById("result");
+      if (!prompt) { alert("Please enter a prompt!"); return; }
+      status.innerText = "Generating...";
+      img.src = "";
+      // Start timer
+      let startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const seconds = ((Date.now() - startTime) / 1000).toFixed(2);
+        status.innerText = `Generating... ${seconds} seconds elapsed`;
+      }, 100);
+      try {
+        const res = await fetch("https://SunilKrishna-image-generative-ai.hf.space/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+        if (!res.ok) throw new Error("Failed to generate image");
+        clearInterval(timerInterval);
+        const blob = await res.blob();
+        img.src = URL.createObjectURL(blob);
+        const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
+        status.innerText = `Done ✅ Time taken: ${totalTime} seconds`;
+      } catch (err) {
+        clearInterval(timerInterval);
+        status.innerText = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
