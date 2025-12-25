@@ -1,29 +1,3 @@
-<!-- <input id="prompt" placeholder="Enter prompt" />
-<button onclick="generate()">Generate</button>
-<img id="result"/>
-
-<script>
-async function generate() {
-  const prompt = document.getElementById("prompt").value;
-
-  const res = await fetch(
-    "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4",
-    {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer YOUR_HF_TOKEN",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ inputs: prompt })
-    }
-  );
-
-  const blob = await res.blob();
-  document.getElementById("result").src = URL.createObjectURL(blob);
-}
-</script> -->
-
-
 <!DOCTYPE html>
 <html>
 <head>
